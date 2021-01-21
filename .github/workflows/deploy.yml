@@ -22,5 +22,5 @@ jobs:
 
       - name: Build Image Packer
         run: | 
-          packer validate -var 'image_Name=test' \ ./Packer/Wvd-Image.json
+          packer validate -var 'image_Name=test' ./Packer/Wvd-Image.json
           
