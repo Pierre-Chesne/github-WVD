@@ -1,0 +1,16 @@
+name: Deploiement infra Windows Virtual Desktop
+
+on:
+  push:
+    branches:
+      - dev
+
+
+jobs:
+  Build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Check version Packer
+        run: |
+          packer --version
