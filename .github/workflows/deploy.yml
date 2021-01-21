@@ -22,12 +22,8 @@ jobs:
       - name: Login Azure
         uses: Azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Validate Image Packer
-        run: | 
-          packer validate -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' ./Packer/Wvd-Image.json
-
-      - name: Build Image Packer
+          creds: ${{ secrets.AZURE_CREDENTIALS }}          
+          
+      - name: List RG
         run: |
-          packer build -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' ./Packer/Wvd-Image.json
+          az group show --name RG-Image-Packer
