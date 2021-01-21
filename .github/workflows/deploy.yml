@@ -7,10 +7,25 @@ on:
 
 
 jobs:
-  Build:
+  Build-Image-Packer:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Check version Packer
-        run: |
-          packer --version
+
+      - name: Recuperation du repo
+        uses: actions/checkout@v2
+
+      - name: Login Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build Image Packer
+        run:
+          packer build \
+          ./Packer/Wvd-Image.json \
+          -var 'sp_Id={{ secrets.sp_Id }}'\
+          -var 'sp_Secret={{ secrets.sp_Secret }}' \
+          -var 'tenant_Id={{ secrets.tenant_Id }}' \
+          -var 'subscription_Id={{ secrets.subscription_Id }}'
+          

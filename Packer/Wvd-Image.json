@@ -1,12 +1,8 @@
 {
-    "variables": {  
-        "sp_Id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",    
-        "sp_Secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-        "tenant_Id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-        "subscription_Id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "variables": {
 
         "image_Rgname":"RG-Image-Packer",
-        "image_Name":"WVD-FSlogix-VLC-Image-v0.5-test",
+        "image_Name":"WVD-FSlogix-VLC-Image-v0.6-test",
         "image_location":"East US 2",
         "image_size":"Standard_D2s_v3",
 
