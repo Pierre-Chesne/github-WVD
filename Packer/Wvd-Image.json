@@ -6,7 +6,7 @@
         "subscription_Id": "45d70f51-2e63-4daa-8870-27e468ba9baa",
 
         "image_Rgname":"RG-Image-Packer",
-        
+        "image_Name":"WVD-FSlogix-VLC-Image-v0.6-test",
         "image_location":"East US 2",
         "image_size":"Standard_D2s_v3",
 
