@@ -6,9 +6,9 @@ on:
       - dev
 
 env:
-  IMAGE_RGNAME: RG-Image-Packer
-  IMAGE_NAME: WVD-FSlogix-VLC-Image-v0.007-test
-  IMAGE_LOCATION: 'East US 2'
+  IMAGE_RGNAME: "RG-Image-Packer"
+  IMAGE_NAME: "WVD-FSlogix-VLC-Image-v0.007-test"
+  IMAGE_LOCATION: "East US 2"
 
 jobs:
   Build-Packer-Image:
