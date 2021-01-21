@@ -22,5 +22,5 @@ jobs:
 
       - name: Build Image Packer
         run:
-          packer build ./Packer/Wvd-Image.json -var 'sp_Id=1c5a056d-9d4b-4074-9ea9-bdf7bb95b201'
+          packer build ./Packer/Wvd-Image.json -var 'sp_Id=1c5a056d-9d4b-4074-9ea9-bdf7bb95b201' -force
           
