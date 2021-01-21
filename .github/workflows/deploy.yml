@@ -22,4 +22,4 @@ jobs:
 
       - name: Build Image Packer
         run: |
-          packer validate ./Packer/Wvd-Image.json -var 'sp_Id=1c5a056d-9d4b-4074-9ea9-bdf7bb95b201'
+          packer validate ./Packer/Wvd-Image.json -var 'image_Name=testImage'
