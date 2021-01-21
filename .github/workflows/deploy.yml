@@ -9,6 +9,13 @@ env:
   IMAGE_RGNAME: "RG-Images-WVD"
   IMAGE_NAME: "WVD-FSlogix-VLC-Image-v0.007-test"
   IMAGE_LOCATION: "East US 2"
+  OS: "Windows"
+  PUBLISHER: "MicrosoftWindowsDesktop"
+  OFFER: "office-365"
+  SKU: "19h2-evd-o365pp"
+  SHARE_PROFILS_LOCATION: "storagefslogix.file.core.windows.net"
+  SHARE_PROFILS_FOLDER: "profiles"
+
 
 jobs:
   Build-Packer-Image:
@@ -26,8 +33,6 @@ jobs:
           
       - name: Validate Image Packer
         run: | 
-          packer validate -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' ./Packer/Wvd-Image.json
+          packer validate -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' -var 'Os=${{ env.OS }}' -var 'Publisher=${{ env.PUBLISHER}}' -var 'Offer=${{ env.OFFER }}' -var 'Sku=${{ env.SKU }}' -var 'Share_Profils_location=${{ env.SHARE_PROFILS_LOCATION }}' -var 'Share_Profils_folder=${{ env.SHARE_PROFILS_FOLDER }}' ./Packer/Wvd-Image.json
 
-      - name: Build Image Packer
-        run: |
-          packer build -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' ./Packer/Wvd-Image.json
+      

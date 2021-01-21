@@ -1,14 +1,5 @@
 {
-    "variables": {       
-        "image_size":"Standard_D2s_v3",
-        "Os":"Windows",
-        "Publisher":"MicrosoftWindowsDesktop",
-        "Offer":"office-365",
-        "SKU":"19h2-evd-o365pp",
-
-        "dept_tag":"Engineering",
-        "task_tag":"Image deployment",
-
+    "variables": {        
         "Share_Profils_location":"storagefslogix.file.core.windows.net",
         "Share_Profils_folder":"profiles"
     },
@@ -24,18 +15,14 @@
             "os_type": "{{user `Os`}}",
             "image_publisher": "{{user `Publisher`}}",
             "image_offer": "{{user `Offer`}}",
-            "image_sku": "{{user `SKU`}}",
+            "image_sku": "{{user `Sku`}}",
             "communicator": "winrm",
             "winrm_use_ssl": true,
             "winrm_insecure": true,
             "winrm_timeout": "5m",
             "winrm_username": "packer",
-            "azure_tags": {
-                "dept": "{{user `dept_tag`}}",
-                "task": "{{user `task_tag`}}"
-            },
             "location": "{{user `image_location`}}",
-            "vm_size": "{{user `image_size`}}"
+            "vm_size": "Standard_D2s_v3"
         }
     ],
     "provisioners": [
