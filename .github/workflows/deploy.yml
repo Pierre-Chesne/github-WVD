@@ -7,12 +7,12 @@ on:
 
 env:
   IMAGE_RGNAME: "RG-Images-WVD"
-  IMAGE_NAME: "WVD-FSlogix-VLC-Image-v0.007-test"
+  IMAGE_NAME: "WVD-FSlogix-VLC-Image-v0.0007-test"
   IMAGE_LOCATION: "East US 2"
   OS: "Windows"
   PUBLISHER: "MicrosoftWindowsDesktop"
   OFFER: "office-365"
-  SKU: "19h2-evd-o365pp"
+  SKU: "20h2-evd-o365pp"
   SHARE_PROFILS_LOCATION: "storagefslogix.file.core.windows.net"
   SHARE_PROFILS_FOLDER: "profiles"
 
@@ -35,4 +35,11 @@ jobs:
         run: | 
           packer validate -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' -var 'Os=${{ env.OS }}' -var 'Publisher=${{ env.PUBLISHER}}' -var 'Offer=${{ env.OFFER }}' -var 'Sku=${{ env.SKU }}' -var 'Share_Profils_location=${{ env.SHARE_PROFILS_LOCATION }}' -var 'Share_Profils_folder=${{ env.SHARE_PROFILS_FOLDER }}' ./Packer/Wvd-Image.json
 
-      
+      - name: Build Image Packer
+        run: |
+          packer build -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' -var 'Os=${{ env.OS }}' -var 'Publisher=${{ env.PUBLISHER}}' -var 'Offer=${{ env.OFFER }}' -var 'Sku=${{ env.SKU }}' -var 'Share_Profils_location=${{ env.SHARE_PROFILS_LOCATION }}' -var 'Share_Profils_folder=${{ env.SHARE_PROFILS_FOLDER }}' ./Packer/Wvd-Image.json
+
+      - name: Notification dans Teams
+        run: |
+          curl -H "Content-Type: application/json" -d "{\"text\": \"Hello  Pierre\"}" https://microsoft.webhook.office.com/webhookb2/253cfe75-d7f0-434d-906d-4a3287580201@7f988bf-86f1-41af-91ab-2d7cd011db47/IncomingWebhook/e5f4d5f54f4c4750ada238207f7f443c/db49bbbf-54e5-4314-abdc-c368d9b66c33
+          
