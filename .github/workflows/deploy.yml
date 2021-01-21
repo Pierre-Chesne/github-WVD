@@ -5,6 +5,10 @@ on:
     branches:
       - dev
 
+env:
+  IMAGE_RGNAME: RG-Image-Packer
+  IMAGE_NAME: WVD-FSlogix-VLC-Image-v0.6-test
+  IMAGE_LOCATION: East US 2
 
 jobs:
   Build-Packer-Image:
@@ -22,4 +26,4 @@ jobs:
 
       - name: Build Image Packer
         run: | 
-          packer validate -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' ./Packer/Wvd-Image.json
+          packer validate -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' ./Packer/Wvd-Image.json

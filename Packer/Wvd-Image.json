@@ -1,11 +1,6 @@
 {
-    "variables": {
-
-        "image_Rgname":"RG-Image-Packer",
-        "image_Name":"WVD-FSlogix-VLC-Image-v0.6-test",        
-        "image_location":"East US 2",
+    "variables": {       
         "image_size":"Standard_D2s_v3",
-
         "Os":"Windows",
         "Publisher":"MicrosoftWindowsDesktop",
         "Offer":"office-365",
