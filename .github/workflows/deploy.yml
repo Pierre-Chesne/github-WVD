@@ -22,5 +22,5 @@ jobs:
 
       - name: Build Image Packer
         run: | 
-          packer validate -var 'sp_Id={{ secrets.SP_ID }}' -var 'sp_Secret={{ secrets.SP_SECRET }}' -var 'tenant_Id={{ secrets.TENANT_ID }}' -var 'subscription_Id={{ secrets.SUBCRIPTION_ID }}'  ./Packer/Wvd-Image.json
+          packer validate -var 'sp_Id=1c5a056d-9d4b-4074-9ea9-bdf7bb95b201' -var 'sp_Secret={{ secrets.SP_SECRET }}' -var 'tenant_Id={{ secrets.TENANT_ID }}' -var 'subscription_Id={{ secrets.SUBCRIPTION_ID }}'  ./Packer/Wvd-Image.json
           
