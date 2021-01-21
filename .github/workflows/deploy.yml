@@ -21,5 +21,6 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Build Image Packer
-        run: packer validate -var 'image_Name=test' ./Packer/Wvd-Image.json
+        run: | 
+          packer validate -var 'image_Name=test' \ ./Packer/Wvd-Image.json
           
