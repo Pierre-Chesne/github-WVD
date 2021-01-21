@@ -8,10 +8,9 @@ on:
 jobs:
   Token-Expiration-Time:
     runs-on: ubuntu-20.04
-
-    jobs:
-      steps:
-        - name: Get Token Expiration
-          shell: pwsh
-          run: $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+   
+    steps:
+      - name: Get Token Expiration
+        shell: pwsh
+        run: $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
           
