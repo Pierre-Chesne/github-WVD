@@ -1,6 +1,11 @@
 {
     "variables": {
 
+        "sp_Id": "1c5a056d-9d4b-4074-9ea9-bdf7bb95b201",
+        "sp_Secret": "FhvVqI74pFeLJD1w8pHOW9F9L.0uxa-bH2",
+        "tenant_Id": "7a4c45f9-0a5a-433f-aed3-30f9328b8a4d",
+        "subscription_Id": "45d70f51-2e63-4daa-8870-27e468ba9baa",
+
         "image_Rgname":"RG-Image-Packer",
         "image_Name":"WVD-FSlogix-VLC-Image-v0.6-test",
         "image_location":"East US 2",
