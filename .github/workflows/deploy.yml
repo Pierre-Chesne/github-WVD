@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  Build-Image-Packer:
+  Build-Packer-Image:
     runs-on: ubuntu-20.04
 
     steps:
@@ -22,5 +22,5 @@ jobs:
 
       - name: Build Image Packer
         run:
-          packer build ./Packer/Wvd-Image.json -var 'sp_Id={{ secrets.sp_Id }}' -var 'sp_Secret={{ secrets.sp_Secret }}' -var 'tenant_Id={{ secrets.tenant_Id }}' -var 'subscription_Id={{ secrets.subscription_Id }}'
+          packer build ./Packer/Wvd-Image.json -var 'sp_Id={{ secrets.sp_Id }}'
           
