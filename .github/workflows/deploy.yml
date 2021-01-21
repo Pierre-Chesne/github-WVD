@@ -26,4 +26,4 @@ jobs:
           
       - name: List RG
         run: |
-          az group show --name RG-Image-Packer
+          az group list
