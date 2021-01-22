@@ -22,7 +22,7 @@ jobs:
         shell: pwsh
         run: |
           $Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
-          echo "::set-output name=content::$($$Expiration)"
+          echo "::set-output name=content::$($Expiration)"
         id: var_expiration      
       
       - name: display string
