@@ -19,38 +19,8 @@ jobs:
    
     steps:
 
-      - name: Recuperation du repo
-        uses: actions/checkout@v2
-
-      - name: Get Token Expiration
-        shell: pwsh
-        run: $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))      
-
-      - name: Login Azure
-        uses: Azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Creation du RG
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.17.1
-          inlineScript: |
-            az group create --name ${{ env.AZURE_RG }} --location ${{ env.AZURE_LOCATION }}
-
-      - name: Test du Template ARM
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.17.1
-          inlineScript: |
-            az deployment group validate --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters ./ARM/azuredeploy.parameters.json
-            
-
-
-
-
-      
-        
-
-    
-          
+      - name: Set selected color
+        run: echo '::set-output name=SELECTED_COLOR::green'
+        id: random-color-generator
+      - name: Get color
+        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"          
