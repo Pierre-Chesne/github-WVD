@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostpools_name": {
+            "value": "Host-Pool-01"
+        },
+        "lbType": {
+            "value": "BreadthFirst"
+        },
+        "tokenExpirationTime": {
+            "value": "2020-12-17T17:17:20.7167090Z"
+        },
+        "workspaces_name": {
+            "value": "Workspace-01"
+        },
+        "Numbers_of_VM": {
+            "value": 2
+        },
+        "vmSize": {
+            "value": "Standard_D2s_v3"
+        },
+        "publisherName": {
+            "value": "MicrosoftWindowsDesktop"
+        },
+        "offerName": {
+            "value": "office-365"
+        },
+        "skuName": {
+            "value": "20h1-evd-o365pp"
+        },
+        "host_name_prefix": {
+            "value": "hostVDI"
+        },
+        "Username": {
+            "value": "pierrc"
+        },
+        "pwdUser": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/45d70f51-2e63-4daa-8870-27e468ba9baa/resourceGroups/RG-AD-WVD/providers/Microsoft.KeyVault/vaults/kv-pierrc"
+                },
+                "secretName": "pwdpierrc"
+            }
+            
+        },
+        "domainName": {
+            "value": "ma-pme.local"
+        },
+        "domainUsername": {
+            "value": "pierrc@ma-pme.local"
+        },
+        "domainUsernamePassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/45d70f51-2e63-4daa-8870-27e468ba9baa/resourceGroups/RG-AD-WVD/providers/Microsoft.KeyVault/vaults/kv-pierrc"
+                },
+                "secretName": "pwdpierrc"
+            }
+            
+        },
+        "virtualNetworkResourceGroupName": {
+            "value": "RG-AD-WVD"
+        },
+        "virtualNetworkName": {
+            "value": "AD-WVD-vnet"
+        },
+        "subnetName": {
+            "value": "subnet-test"
+        }
+    }
+}
