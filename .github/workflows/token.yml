@@ -28,4 +28,7 @@ jobs:
       - name: Get Token Expiration
         shell: pwsh
         run: $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
-        id: Expiration           
+        id: Expiration
+
+      - name: Get Expiration
+        run: ${{ steps.Experition.outputs }}           
