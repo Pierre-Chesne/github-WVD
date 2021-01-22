@@ -3,10 +3,13 @@ name: Test Get Expiratiion Time
 on:
   push:
     branches:
-      - dev
-    
+      - dev    
     path:
       - "test/**"
+    tags:
+      - token
+
+    
 
 jobs:
   Token-Expiration-Time:
