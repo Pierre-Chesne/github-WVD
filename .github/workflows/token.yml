@@ -21,11 +21,9 @@ jobs:
 
       - name: create string
         run: |
-          MY_STRING=$($Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
-          )
+          MY_STRING="hello world"
           echo "::set-output name=content::$MY_STRING"
         id: my_string
       - name: display string
         run: |
           echo "The string is: ${{ steps.my_string.outputs.content }}"
-
