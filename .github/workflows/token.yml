@@ -23,7 +23,7 @@ jobs:
         shell: pwsh
         run: |
           $MY_STRING="hello world"
-          echo "::set-output name=content::$$MY_STRING"
+          echo "::set-output name=content::$($MY_STRING)"
         id: my_string
       
       
