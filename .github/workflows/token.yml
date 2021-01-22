@@ -19,14 +19,13 @@ jobs:
    
     steps:
 
-      - name: Set outputs
+      - name: Set outputs Expiration
         id: vars
         shell: pwsh
-        run: echo '::set-output name=production::$(ls)'
+        run: |
+          $Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+          echo '::set-output name=content::$Expiration'
 
-      - name: Check outputs
-        shell: pwsh
-        run: echo "${{ steps.vars.outputs.production }}"
-
-
-   
+      - name: Display Expiration
+        run: |
+          echo "${{ steps.vars.outputs.content }}" 
