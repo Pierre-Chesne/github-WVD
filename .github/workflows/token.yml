@@ -4,12 +4,8 @@ on:
   push:
     branches:
       - dev    
-    path:
-      - "test/**"
-    tags:
-      - token
-
-    
+    paths:
+      - "test/**"    
 
 jobs:
   Token-Expiration-Time:
