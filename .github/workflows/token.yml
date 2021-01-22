@@ -12,7 +12,6 @@ env:
   AZURE_LOCATION: "eastus2"
 
 
-
 jobs:
   Token-Expiration-Time:
     runs-on: ubuntu-20.04
@@ -22,11 +21,10 @@ jobs:
       - name: create string
         shell: pwsh
         run: |
-          $MY_STRING=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
-          echo "::set-output name=content::$($MY_STRING)"
-        id: my_string
-      
+          $Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+          echo "::set-output name=content::$($$Expiration)"
+        id: var_expiration      
       
       - name: display string
         run: |
-          echo "The string is: ${{ steps.my_string.outputs.content }}"
+          echo "The string is: ${{ steps.var_expiration.outputs.content }}"
