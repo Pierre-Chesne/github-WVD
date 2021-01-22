@@ -26,6 +26,6 @@ jobs:
           $Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
           echo '::set-output name=content::$Expiration'
 
-
-
-
+      - name: Display Expiration
+        run: |
+          echo "${{ steps.vars.outputs.content }}"
