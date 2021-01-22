@@ -25,6 +25,6 @@ jobs:
           echo "::set-output name=content::$($Expiration)"
         id: var_expiration      
       
-      - name: display string
+      - name: Test du temp d'expiration du Token (host Pool)
         run: |
           echo "The string is: ${{ steps.var_expiration.outputs.content }}"
