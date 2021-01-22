@@ -19,16 +19,13 @@ jobs:
    
     steps:
 
-      - name: create string
+      - name: Set outputs Expiration
+        id: vars
+        shell: pwsh
         run: |
-          MY_STRING=$(cat << EOF
-          first line
-          second line
-          third line
-          EOF
-          )
-          echo "::set-output name=content::$MY_STRING"
-        id: my_string
-      - name: display string
-        run: |
-          echo "The string is: ${{ steps.my_string.outputs.content }}"
+          $Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+          echo '::set-output name=content::$Expiration'
+
+
+
+
