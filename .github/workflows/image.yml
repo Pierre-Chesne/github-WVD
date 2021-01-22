@@ -11,7 +11,7 @@ env:
 # Varialbles Image Packer
   IMAGE_RGNAME: "RG-Images-WVD"
   IMAGE_NAME: "WVD-FSlogix-VLC-Image-v0.0007-test"
-  IMAGE_LOCATION: "East US 2"
+  IMAGE_LOCATION: "eastus2"
   OS: "Windows"
   PUBLISHER: "MicrosoftWindowsDesktop"
   OFFER: "office-365"
@@ -42,7 +42,7 @@ jobs:
           azcliversion: 2.17.1
           inlineScript: |
             az group create --name ${{ env.IMAGE_RGNAME }} --location ${{ env.IMAGE_LOCATION }}
-                     
+
       - name: Validate Image Packer
         run: | 
           packer validate -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' -var 'Os=${{ env.OS }}' -var 'Publisher=${{ env.PUBLISHER}}' -var 'Offer=${{ env.OFFER }}' -var 'Sku=${{ env.SKU }}' -var 'Share_Profils_location=${{ env.SHARE_PROFILS_LOCATION }}' -var 'Share_Profils_folder=${{ env.SHARE_PROFILS_FOLDER }}' ./Packer/Wvd-Image.json
