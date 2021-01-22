@@ -27,7 +27,11 @@
                 "resource_group": "RG-Images-WVD",
                 "gallery_name": "sharedImageGallery",
                 "image_name": "windows_WVD",
-                "image_version": "1.0.0"
+                "image_version": "1.0.0",
+                "replication_regions": [
+                    "eastus"
+                ]
+
             }
         }
     ],
