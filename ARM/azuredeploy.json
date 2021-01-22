@@ -251,7 +251,7 @@
                         "publisher": "[parameters('publisherName')]",
                         "offer": "[parameters('offerName')]",
                         "sku": "[parameters('skuName')]",
-                        "version": "latest"
+                        "version": "latest"                        
                     },
                     "osDisk": {
                         "osType": "Windows",
