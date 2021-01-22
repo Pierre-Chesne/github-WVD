@@ -9,7 +9,11 @@ on:
 
 env:
   AZURE_RG: "RG-WVD-00" # nom du resource groupe
-  AZURE_LOCATION: "eastus2" # region Azure
+  AZURE_LOCATION: "eastus2" # region Azure  
+  HOSTPOOLS_NAME: "Host-Pool-01"
+  POOLTYPE: pooled
+  LBTYPE: BreadthFirst 
+
 
 
 jobs:
@@ -49,7 +53,7 @@ jobs:
         with:
           azcliversion: 2.17.1
           inlineScript: |
-            az deployment group validate --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=Host-Pool-01' 'poolType=pooled' 'lbType=BreadthFirst' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=Workspace-01' 'vmSize=Standard_D2s_v3' 'publisherName=MicrosoftWindowsDesktop' 'offerName=office-365' 'skuName=20h1-evd-o365pp' 'Numbers_of_VM=2' 'host_name_prefix=hostVDI' 'Username=pierrc' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=ma-pme.local' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=RG-AD-WVD' 'virtualNetworkName=AD-WVD-vnet' 'subnetName=subnet-test'
+            az deployment group validate --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=Workspace-01' 'vmSize=Standard_D2s_v3' 'publisherName=MicrosoftWindowsDesktop' 'offerName=office-365' 'skuName=20h1-evd-o365pp' 'Numbers_of_VM=2' 'host_name_prefix=hostVDI' 'Username=pierrc' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=ma-pme.local' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=RG-AD-WVD' 'virtualNetworkName=AD-WVD-vnet' 'subnetName=subnet-test'
 
       - name: What-If du Template ARM
         uses: azure/CLI@v1
