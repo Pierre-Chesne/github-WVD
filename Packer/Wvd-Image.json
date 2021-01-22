@@ -22,14 +22,7 @@
             "winrm_timeout": "5m",
             "winrm_username": "packer",
             "location": "{{user `image_location`}}",
-            "vm_size": "Standard_D2s_v3",
-            "shared_image_gallery_destination": {
-                "resource_group": "RG-Images-WVD",
-                "gallery_name": "MyGallery",
-                "image_name": "WVD",
-                "image_version": "ver.0",
-                "replication_regions": "eastus2"
-            }              
+            "vm_size": "Standard_D2s_v3"            
         } 
 
     ],
