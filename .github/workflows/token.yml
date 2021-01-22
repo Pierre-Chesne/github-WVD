@@ -27,5 +27,5 @@ jobs:
 
       - name: Get Token Expiration
         shell: pwsh
-        run: echo '$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))'
+        run: echo '::$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))'
         id: Expiration           
