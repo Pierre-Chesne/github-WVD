@@ -15,6 +15,12 @@
                 "description": "Nom du 'host pool'"
             }
         },
+        "poolType" : {
+            "type": "string",
+            "metadata": {
+                "description": "Type de pool"
+            }
+        },
         "lbType": {
             "type": "string",
             "allowedValues": [
@@ -134,7 +140,7 @@
             "name": "[parameters('hostpools_name')]",
             "location": "[parameters('location')]",
             "properties": {
-                "hostPoolType": "Pooled",
+                "hostPoolType": "[parameters('poolType')]",
                 "maxSessionLimit": 5,
                 "loadBalancerType": "[parameters('lbType')]",
                 "validationEnvironment": true,
