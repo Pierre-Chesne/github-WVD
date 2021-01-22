@@ -19,19 +19,14 @@ jobs:
    
     steps:
 
-      - name: Set selected color
-        run: echo '::set-output name=SELECTED_COLOR::green'
-        id: random-color-generator
-
-      - name: Get color
-        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
-
-
-
-      - name: Get Token Expiration
+      - name: Set outputs
+        id: vars
         shell: pwsh
-        run: output=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))        
-        id: Expiration
+        run: echo "::set-output name=production::true"
 
-      - name: Get Expiration
-        run: echo $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))           
+      - name: Check outputs
+        shell: pwsh
+        run: echo ${{ steps.vars.outputs.production }}
+
+
+   
