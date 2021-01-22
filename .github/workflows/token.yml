@@ -22,7 +22,7 @@ jobs:
       - name: Set outputs
         id: vars
         shell: pwsh
-        run: echo '::set-output name=production::$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))'
+        run: echo '::set-output name=production::ls'
 
       - name: Check outputs
         shell: pwsh
