@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - dev
+    path:
+      - "Packer/**"
 
 env:
   IMAGE_RGNAME: "RG-Images-WVD"
