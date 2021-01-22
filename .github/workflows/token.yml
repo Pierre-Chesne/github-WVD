@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - dev
+    
+    path:
+      - "test/**"
 
 jobs:
   Token-Expiration-Time:
