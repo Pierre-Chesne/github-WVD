@@ -5,7 +5,13 @@ on:
     branches:
       - dev    
     paths:
-      - "test/**"    
+      - "test/**"
+
+env:
+  AZURE_RG: "RG-WVD-00"
+  AZURE_LOCATION: "eastus2"
+
+
 
 jobs:
   Token-Expiration-Time:
@@ -15,4 +21,21 @@ jobs:
       - name: Get Token Expiration
         shell: pwsh
         run: $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+
+      - name: Login Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Creation du RG
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.17.1
+          inlineScript: |
+            az group create --name ${{ env.AZURE_RG }} --location ${{ env.AZURE_LOCATION }}
+
+      
+        
+
+    
           
