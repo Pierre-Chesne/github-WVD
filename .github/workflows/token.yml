@@ -18,7 +18,7 @@ jobs:
    
     steps:
 
-      - name: create string
+      - name: Creation du temp d'expiration du Token (host Pool)
         shell: pwsh
         run: |
           $Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
