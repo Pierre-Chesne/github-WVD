@@ -248,7 +248,7 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "/subscriptions/[parameters('subscription_ID')]/resourceGroups/parameters('RG_Images')/providers/Microsoft.Compute/images/[parameters('Image_WDV')]"                  
+                        "id": "/subscriptions/[parameters('subscription_ID')]/resourceGroups/parameters('RG_Images')/providers/Microsoft.Compute/images/[parameters('Image_WDV')]"            
                     },
                     "osDisk": {
                         "osType": "Windows",
