@@ -248,7 +248,7 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "[resourceId('Microsoft.Compute/images', 'Image_WDV')]"             
+                        "id": "[resourceId('Microsoft.Compute/images', 'WVD-FSlogix-VLC-Image-v0.0007-test')]"             
                     },
                     "osDisk": {
                         "osType": "Windows",
