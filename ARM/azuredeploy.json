@@ -248,17 +248,13 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "/subscriptions/45d70f51-2e63-4daa-8870-27e468ba9baa/resourceGroups/RG-Images-WVD/providers/Microsoft.Compute/images/WVD-FSlogix-VLC-Image-v0.0007-test"
-
-
-                  
+                        "id": "/subscriptions/[parameterc('subscrition_ID')]/resourceGroups/parameters('RG_Images')/providers/Microsoft.Compute/images/[parameters('Image_WDV')]"                  
                     },
                     "osDisk": {
                         "osType": "Windows",
                         "name": "[concat(parameters('host_name_prefix'),'-',copyIndex(), '_OsDisk_1')]",
                         "createOption": "FromImage",
                         "caching": "ReadWrite"
-
                     },
                     "dataDisks": []
                 },
