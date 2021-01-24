@@ -43,7 +43,7 @@ jobs:
           inlineScript: |
             az group create --name ${{ env.IMAGE_RGNAME }} --location ${{ env.IMAGE_LOCATION }}
 
-      - name: Validate Image Packer
+      - name: Creation du ressource groupe
         run: | 
           packer validate -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.IMAGE_RGNAME }}' -var 'image_Name=${{ env.IMAGE_NAME }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' -var 'Os=${{ env.OS }}' -var 'Publisher=${{ env.PUBLISHER}}' -var 'Offer=${{ env.OFFER }}' -var 'Sku=${{ env.SKU }}' -var 'Share_Profils_location=${{ env.SHARE_PROFILS_LOCATION }}' -var 'Share_Profils_folder=${{ env.SHARE_PROFILS_FOLDER }}' ./Packer/Wvd-Image.json
 

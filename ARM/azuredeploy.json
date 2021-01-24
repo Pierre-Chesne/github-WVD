@@ -248,10 +248,10 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "publisher": "[parameters('publisherName')]",
-                        "offer": "[parameters('offerName')]",
-                        "sku": "[parameters('skuName')]",
-                        "version": "latest"                        
+                        "id": "/subscriptions/45d70f51-2e63-4daa-8870-27e468ba9baa/resourceGroups/RG-Images-WVD/providers/Microsoft.Compute/images/WVD-FSlogix-VLC-Image-v0.0007-test"
+
+
+                  
                     },
                     "osDisk": {
                         "osType": "Windows",
