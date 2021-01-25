@@ -64,4 +64,3 @@ jobs:
           azcliversion: 2.17.1
           inlineScript: |
             az deployment group validate --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
-
