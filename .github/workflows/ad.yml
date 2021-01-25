@@ -1,0 +1,15 @@
+name: Module AD
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "AD/**"
+
+
+jobs:
+  Permission-Utilisateurs:
+    runs-on: windows-2019
+
+    steps:

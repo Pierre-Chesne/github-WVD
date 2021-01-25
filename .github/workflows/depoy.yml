@@ -72,6 +72,10 @@ jobs:
           azcliversion: 2.17.1
           inlineScript: |
             az deployment group what-if --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
+
+      - name: Notification Webhook -> Slack
+        run: |
+          curl -H "Content-Type: application/json" -d "{\"text\": \"Validation du deploiement WVD\"}" https://hooks.slack.com/services/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      
   
   
   Deploy:
@@ -107,6 +111,10 @@ jobs:
           azcliversion: 2.17.1
           inlineScript: |
             az deployment group create --resource-group ${{ env.AZURE_RG }} --name ${{ env.DEPLOYNAME }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
+
+- name: Notification Webhook -> Slack
+        run: |
+          curl -H "Content-Type: application/json" -d "{\"text\": \"Deploiement WVD termine\"}" https://hooks.slack.com/services/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      
 
 
          
