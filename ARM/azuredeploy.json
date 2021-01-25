@@ -110,6 +110,24 @@
             "metadata": {
                 "description": "Nom du subnet (joingnable avec controleur de domaine) "
             }
+        },
+                "subscription_ID": {
+            "type": "string",
+            "metadata": {
+                "description": "ID de l'abonnement"
+            }                           
+        },
+        "RG_Images": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du ressource groupe de l'image"
+            }
+        },
+        "Image_WDV": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom de l'image"
+            }
         }
     },
     "variables": {
@@ -231,7 +249,7 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "[concat('/','subscriptions','/',parameters('subscription_ID'),'/resourceGroups/',parameters('RG_Images'),'/providers/Microsoft.Compute/images/',parameters('Image_WDV'))]"
+                        "id": "[concat('subscriptions/',parameters('subscription_ID'),'/resourceGroups/',parameters('RG_Images'),'/providers/Microsoft.Compute/images/',parameters('Image_WDV'))]"
                                                 
                     },
                     "osDisk": {
