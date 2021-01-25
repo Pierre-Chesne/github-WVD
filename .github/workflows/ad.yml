@@ -25,8 +25,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
-      - name: Installation modules AzureAD
-        uses: azure/powershell@v1
-        with:
-          inlineScript: |
-            New-AzRoleAssignment -ObjectId (Get-AzADGroup -DisplayName ${{ env.AADGroupName }}).Id -RoleDefinitionName "Desktop Virtualization User" -ResourceName ${{ env.dagName }} -ResourceGroupName ${{ env.rgName }} -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'       
+    - name: Installation modules AzureAD
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          New-AzRoleAssignment -ObjectId (Get-AzADGroup -DisplayName ${{ env.AADGroupName }}).Id -RoleDefinitionName "Desktop Virtualization User" -ResourceName ${{ env.dagName }} -ResourceGroupName ${{ env.rgName }} -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'       
