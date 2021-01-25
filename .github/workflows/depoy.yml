@@ -1,4 +1,4 @@
-name: Deploiement d une infra Windows Virtual Desktop
+name: Deploiement d'une infra Windows Virtual Desktop
 
 on:
   push:
@@ -16,17 +16,16 @@ env:
   WORKSPACE_NAME: "Workspace-01" # Nom du Workslace
   VMSIZE: "Standard_D2s_v3" # taille de la 
   NUMBERS_OF_VM: 2 # Nombre de hosts dans le Host Pool
-  HOST_NAME_PREFIX: "hostVDI"  
-  USERNAME: "pierrc"
-  DOMAINNAME: "ma-pme.local"
-  DOMAINEUSERNAME: "pierrc@ma-pme.local"
-  VIRTUALNETWORKRESOURCEGROUPNAME: "RG-AD-WVD"
-  VIRTUALNETWORKNAME: "AD-WVD-vnet"
-  SUBNETNAME: "subnet-test"
-  RG_IMAGES: "RG-Images-WVD"
-  IMAGE_WVD: "WVD-FSlogix-VLC-Image-v0.0007-test"
-  DEPLOYNAME: "Rollup-001"
-
+  HOST_NAME_PREFIX: "hostVDI" # Prefix des hosts  
+  USERNAME: "pierrc" # compte admin local des Hosts
+  DOMAINNAME: "ma-pme.local" # Nom de l'active directory (local) 
+  DOMAINEUSERNAME: "pierrc@ma-pme.local" # Compte ayant le droit de mettre compte machine dans l'AD
+  VIRTUALNETWORKRESOURCEGROUPNAME: "RG-AD-WVD" # Nom du ressource groupe joingnable par l'active directory (local) 
+  VIRTUALNETWORKNAME: "AD-WVD-vnet" # Nom du Virtual Network joingnable par l'active directory (local) 
+  SUBNETNAME: "subnet-test" # Nom du subnet joingnable par l'active directory (local)
+  RG_IMAGES: "RG-Images-WVD" # Nom du ressource groupe de l'image générée par Packer
+  IMAGE_WVD: "WVD-FSlogix-VLC-Image-v0.0007-test" # Nom de l'image générée par Packer
+  DEPLOYNAME: "Rollup-001" # Nom du déploiement 
 
 jobs:
   Test-Template:
@@ -79,7 +78,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: Test-Template
     environment:
-      name: Depl
+      name: depl
 
     steps:
 
