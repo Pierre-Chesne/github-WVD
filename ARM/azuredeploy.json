@@ -113,7 +113,10 @@
         }
     },
     "variables": {
-        "subnet-id": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
+        "subnet-id": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
+        "subscription_ID": "45d70f51-2e63-4daa-8870-27e468ba9baa",
+        "RG_Images": "RG_Images",
+        "Image_WDV": "WVD-FSlogix-VLC-Image-v0.0007-test"
     },
     "resources": [
         {
@@ -230,7 +233,8 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "[concat('/subscriptions/',parameters('subscription_ID'),'/resourceGroups/',parameters('RG_Images'),'/providers/Microsoft.Compute/images/',parameters('Image_WDV'))]"
+                        "id": "[concat('/subscriptions/',variables('subscription_ID'),'/resourceGroups/',variables('RG_Images'),'/providers/Microsoft.Compute/images/',variables('Image_WDV'))]"
+
                         
                     },
                     "osDisk": {
