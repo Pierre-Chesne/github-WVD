@@ -233,7 +233,7 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "[concat('/subscriptions/',variables('subscription_ID'),'/resourceGroups/',variables('RG_Images'),'/providers/Microsoft.Compute/images/',variables('Image_WDV'))]"
+                        "id": "[concat('/','subscriptions','/',variables('subscription_ID'),'/resourceGroups/',variables('RG_Images'),'/providers/Microsoft.Compute/images/',variables('Image_WDV'))]"
 
                         
                     },

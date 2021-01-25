@@ -51,13 +51,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Creation du RG
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.17.1
-          inlineScript: |
-            az group create --name ${{ env.AZURE_RG }} --location ${{ env.AZURE_LOCATION }}
-            
+           
       - name: Test du Template ARM
         uses: azure/CLI@v1
         with:
