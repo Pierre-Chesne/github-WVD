@@ -89,9 +89,20 @@ jobs:
       - name: Login Azure
         uses: Azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}    
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Dempoiement du Template ARM
+      - name: Creation du temp d'expiration du Token (host Pool)
+        shell: pwsh
+        run: |
+          $Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+          echo "::set-output name=content::$($Expiration)"
+        id: var_expiration      
+      
+      - name: Test du temp d'expiration du Token (host Pool)
+        run: |
+          echo "The string is: ${{ steps.var_expiration.outputs.content }}"    
+
+      - name: Deploiement du Template ARM
         uses: azure/CLI@v1
         with:
           azcliversion: 2.17.1
