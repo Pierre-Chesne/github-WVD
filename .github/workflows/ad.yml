@@ -13,3 +13,11 @@ jobs:
     runs-on: windows-2019
 
     steps:
+
+      - name: Installation modules AzureAD
+        shell: pwsh
+        run: |
+          Install-Module -Name AzureAD -force
+          Import-Module AzureAD
+
+        
