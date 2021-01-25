@@ -29,7 +29,7 @@ env:
 
 
 jobs:
-  Token-Expiration-Time-Test-Template:
+  Test-Template:
     runs-on: ubuntu-20.04
    
     steps:
@@ -84,7 +84,12 @@ jobs:
     steps:
 
       - name: Recuperation du repo
-        uses: actions/checkout@v2    
+        uses: actions/checkout@v2
+
+      - name: Login Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}    
 
       - name: Dempoiement du Template ARM
         uses: azure/CLI@v1
