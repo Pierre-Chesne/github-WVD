@@ -233,7 +233,8 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "[concat('/','subscriptions','/',variables('subscription_ID'),'/resourceGroups/',variables('RG_Images'),'/providers/Microsoft.Compute/images/',variables('Image_WDV'))]"
+                        //"id": "[concat('/','subscriptions','/',variables('subscription_ID'),'/resourceGroups/',variables('RG_Images'),'/providers/Microsoft.Compute/images/',variables('Image_WDV'))]"
+                        "id": "/subscriptions/45d70f51-2e63-4daa-8870-27e468ba9baa/resourceGroups/RG-Images-WVD/providers/Microsoft.Compute/images/WVD-FSlogix-VLC-Image-v0.0007-test"
 
                         
                     },
