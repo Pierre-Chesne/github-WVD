@@ -231,7 +231,7 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "[concat('/','subscriptions','/',variables('subscription_ID'),'/resourceGroups/',variables('RG_Images'),'/providers/Microsoft.Compute/images/',variables('Image_WDV'))]"
+                        "id": "[concat('/','subscriptions','/',parameters('subscription_ID'),'/resourceGroups/',parameters('RG_Images'),'/providers/Microsoft.Compute/images/',parameters('Image_WDV'))]"
                                                 
                     },
                     "osDisk": {
