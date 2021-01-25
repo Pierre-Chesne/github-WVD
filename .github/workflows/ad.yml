@@ -1,4 +1,4 @@
-name: Module AD
+name: AD Users
 
 on:
   push:
@@ -7,6 +7,11 @@ on:
     paths:
       - "AD/**"
 
+env:
+  AADGroupName: "WVDUsers"
+  DAGName: "Host-Pool-01-DAG"
+  rgName: "RG-WVD-00"        
+
 
 jobs:
   Permission-Utilisateurs:
@@ -14,10 +19,14 @@ jobs:
 
     steps:
 
-      - name: Installation modules AzureAD
-        shell: pwsh
-        run: |
-          Install-Module -Name AzureAD -force
-          Import-Module AzureAD
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
 
-        
+      - name: Installation modules AzureAD
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            New-AzRoleAssignment -ObjectId (Get-AzADGroup -DisplayName ${{ env.AADGroupName }}).Id -RoleDefinitionName "Desktop Virtualization User" -ResourceName ${{ env.dagName }} -ResourceGroupName ${{ env.rgName }} -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'       
