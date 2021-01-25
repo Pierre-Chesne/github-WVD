@@ -1,4 +1,4 @@
-name: Test Get Expiratiion Time
+name: Deploiement d une infra Windows Virtual Desktop
 
 on:
   push:
@@ -29,7 +29,7 @@ env:
 
 
 jobs:
-  Token-Expiration-Time-test-template:
+  Token-Expiration-Time-Test-Template:
     runs-on: ubuntu-20.04
    
     steps:
@@ -82,6 +82,9 @@ jobs:
       name: Depl
 
     steps:
+
+      - name: Recuperation du repo
+        uses: actions/checkout@v2    
 
       - name: Dempoiement du Template ARM
         uses: azure/CLI@v1
