@@ -84,8 +84,8 @@
             "type": "string",
             "metadata": {
                 "description": "Nom d'un compte utilisateur ayant les droits d'ajouter un compte d'ordinateur "
-            },
-            "defaultValue": "pierrc@ma-pme.local"
+            }
+            
         },
         "domainUsernamePassword": {
             "type": "securestring",
