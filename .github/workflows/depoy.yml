@@ -77,7 +77,7 @@ jobs:
   
   Deploy:
     runs-on: ubuntu-20.04
-    needs: Token-Expiration-Time-test-template
+    needs: Test-Template
     environment:
       name: Depl
 
