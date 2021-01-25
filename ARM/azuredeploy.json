@@ -50,24 +50,6 @@
                 "description": "Taille de la VM"
             }
         },
-        "publisherName": {
-            "type": "string",
-            "metadata": {
-                "description": "description Publisher Name"
-            }
-        },
-        "offerName": {
-            "type": "string",
-            "metadata": {
-                "description": "description Offer Name"
-            }
-        },
-        "skuName": {
-            "type": "string",
-            "metadata": {
-                "description": "description SKU Name"
-            }
-        },
         "Numbers_of_VM": {
             "type": "int",
             "metadata": {
