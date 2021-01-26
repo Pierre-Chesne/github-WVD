@@ -63,12 +63,12 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Creation Shared image gallery
+      - name: Creation du "Resource Group" Image Packer
         uses: azure/CLI@v1
         with:
           azcliversion: 2.17.1
           inlineScript: |
-            az group create --name ${{ env.IMAGE_RGNAME }} --location ${{ env.IMAGE_LOCATION }}
+            az group create --name ${{ env.RG_IMAGES }} --location ${{ env.IMAGE_LOCATION }}
 
       - name: Creation du ressource groupe
         run: | 
