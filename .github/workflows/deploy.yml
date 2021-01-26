@@ -11,16 +11,13 @@ env:
   # Variables Packer
   RG_IMAGES: "RG-Images-WVD" # Nom du ressource groupe de l'image générée par Packer
   IMAGE_WVD: "WVD-FSlogix-VLC-Image-v0.0007-test" # Nom de l'image générée par Packer
-  IMAGE_LOCATION: "eastus2"
-  OS: "Windows"
-  PUBLISHER: "MicrosoftWindowsDesktop"
-  OFFER: "office-365"
-  SKU: "20h2-evd-o365pp"
-  SHAREIMAGEGALLERY: "sharedImageGallery"
-  IMAGE_DEFINITION: "windows_WVD"
-  PUB_GALLERY: "AzureWVD"
-  SHARE_PROFILS_LOCATION: "vm-profiles"
-  SHARE_PROFILS_FOLDER: "ShareFSLogix"  
+  IMAGE_LOCATION: "eastus2" # Region Image
+  OS: "Windows" # Type OS
+  PUBLISHER: "MicrosoftWindowsDesktop" # Publisher WVD
+  OFFER: "office-365" # Avec Office 365
+  SKU: "20h2-evd-o365pp" # Dernier SKU
+  SHARE_PROFILS_LOCATION: "vm-profiles" # Nom de la VM ou seront stockés les contenaires FSLogix
+  SHARE_PROFILS_FOLDER: "ShareFSLogix"  # Nom du partage ou seront stockés les contenaires FSLogix
   
   # Variables Ressource Groupe WVD
   AZURE_RG: "RG-WVD-00" # nom du resource groupe
@@ -46,7 +43,7 @@ env:
   SUBNETNAME: "subnet-test" # Nom du subnet joingnable par l'active directory (local)
   
   # Variables Droits Utilisateurs (Azure AD) "Application Group"
-  AADGroupName: "WVDUsers"
+  AADGroupName: "WVDUsers" # Group AD acces à "l'application Group"
 
 jobs:
 
@@ -91,7 +88,8 @@ jobs:
                 "author_name": "${{ github.actor }}",
                 "author_icon": "${{ github.event.sender.avatar_url }}"
               }
-            ] 
+            ]
+
   Test-Template:
     runs-on: ubuntu-20.04
     needs: Build-Packer-Image
@@ -205,3 +203,18 @@ jobs:
         inlineScript: |
           New-AzRoleAssignment -ObjectId (Get-AzADGroup -DisplayName ${{ env.AADGroupName }}).Id -RoleDefinitionName "Desktop Virtualization User" -ResourceName ${{ env.DAGNAME }} -ResourceGroupName ${{ env.AZURE_RG }} -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'
         azPSVersion: '4.7.0'
+
+    - name: Slack Notification du déploiement
+      uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          text: Action GitHub -> "repo github-WVD " -> Deploiement OK !
+          attachments: |
+            [
+              {
+                "color": "good",
+                "author_name": "${{ github.actor }}",
+                "author_icon": "${{ github.event.sender.avatar_url }}"
+              }
+            ]
