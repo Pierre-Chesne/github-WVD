@@ -13,12 +13,9 @@ jobs:
 
     steps:
 
-      - name: Set Message Approuve
-        run: |          
-          echo '::set-output name=message_url::https://github.com/Pierre-Chesne/github-WVD/actions'
-        id: url
-
-      - name: test
-        run: |
-          echo "The string is: ${{ steps.url.outputs.content.message_url }}"
+      - name: Set selected color
+        run: echo '::set-output name=SELECTED_COLOR::green'
+        id: random-color-generator
+      - name: Get color
+        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
       
