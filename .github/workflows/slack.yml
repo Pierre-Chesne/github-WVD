@@ -18,5 +18,6 @@ jobs:
         id: url
 
       - name: test
-        run: echo "The string is: ${{ steps.url.outputs.content }}"
+        run: |
+          echo "The string is: ${{ steps.url.outputs.content }}"
       
