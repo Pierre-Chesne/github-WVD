@@ -151,8 +151,7 @@ jobs:
                 "author_name": "${{ github.actor }}",
                 "author_icon": "${{ github.event.sender.avatar_url }}"
               }
-            ] 
-                  
+            ]        
    
   Deploiement:
     runs-on: ubuntu-20.04
