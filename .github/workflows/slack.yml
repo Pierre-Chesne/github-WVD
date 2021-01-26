@@ -24,19 +24,13 @@ jobs:
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          text: Action GitHub -> "repo github-WVD "
+          text: Action GitHub -> "repo github-WVD " -> Approuve https://github.com/Pierre-Chesne/github-WVD/actions
           attachments: |
             [
               {
                 "color": "good",
                 "author_name": "${{ github.actor }}",
-                "author_icon": "${{ github.event.sender.avatar_url }}",
-                "fields":[
-                  {
-                    "title": "Approuve le déploiement"
-                    "value": echo "${{ steps.url.outputs.SELECTED_URL }}" 
-                  }
-                ]
+                "author_icon": "${{ github.event.sender.avatar_url }}"
               }
             ] 
       
