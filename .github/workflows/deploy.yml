@@ -204,7 +204,7 @@ jobs:
           New-AzRoleAssignment -ObjectId (Get-AzADGroup -DisplayName ${{ env.AADGroupName }}).Id -RoleDefinitionName "Desktop Virtualization User" -ResourceName ${{ env.DAGNAME }} -ResourceGroupName ${{ env.AZURE_RG }} -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'
         azPSVersion: '4.7.0'
 
-    - name: Slack Notification du déploiement
+    - name: Slack Notification fin du déploiement
       uses: tokorom/action-slack-incoming-webhook@main
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
