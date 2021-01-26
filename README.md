@@ -3,7 +3,7 @@
 Exemple de chaîne de déploiement complète d'une infrastructure Windows Virtual Desktop.<br/>
 Ce Workflows "GitHub Actions" exécute quatre jobs:<br/>
 - Build d'une image Windows 10 multi-sessions avec Packer :
-    - L'installation FSLogix
+    - L'installation et paramétrage de FSLogix
     - Player VLC
     - Notification via Webhook dans Slack 
 - Test/What-If de template ARM
@@ -19,11 +19,18 @@ Ce Workflows "GitHub Actions" exécute quatre jobs:<br/>
     - Notifacation via Webhook dans Slack
 
 Prérequis (WVD):<br/>
--- Un controleur de domaine (Windows Serveur avec le rôle ADDS) dans Azure<br/>
--- Le domaine ADDS (Windows Server) doit être synchronisé avec AD Connect<br/>
--- Un "virtual network/subnet" sur lequel on peut joindre de controleur de domaine<br/>
--- Un Service Principal owner de l'abonnement Azure
+- Un controleur de domaine (Windows Serveur avec le rôle ADDS) dans Azure<br/>
+- Le domaine ADDS (Windows Server) doit être synchronisé avec AD Connect<br/>
+- Un "virtual network/subnet" sur lequel on peut joindre de controleur de domaine<br/>
+- Un Service Principal owner de l'abonnement Azure (déploiement de Image Packer & déploiement des ressources)
 
 Prérequis GitHub Actions:<br/>
-
-   
+- <a href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Secrets dans Github</a>
+    - AZURE_CREDENTIALS
+    - DOMAINE_USER_NAME_PASSWORD -> compte utilisateur du domaine (compte machine dans l'AD)
+    - PWD_USER -> compte admin local des hosts
+    - SLACK_WEBHOOK_URL -> url du canal SLACK
+    - SP_ID -> Service Principal (Packer)
+    - SP_SECRET -> Secret du Service Principal (Packer)
+    - SUBSCRIPTION_ID -> ID de l'abonnement (Packer)
+    - TENANT_ID -> ID du tenant (Packer)
