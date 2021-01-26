@@ -26,7 +26,7 @@ Prérequis (WVD):<br/>
 
 Prérequis GitHub Actions:<br/>
 - <a href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Secrets dans Github</a>
-    - AZURE_CREDENTIALS
+    - AZURE_CREDENTIALS (structure ci-dessous)
     ```
   {
     "clientId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
