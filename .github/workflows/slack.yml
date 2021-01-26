@@ -17,7 +17,13 @@ jobs:
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          text: Hello Blairau !  
+          text: Approuve le déploiement ! 
+          attachments: |
+            [
+              {
+                "color": "good"
+              }
+            ]  
     
 
 
