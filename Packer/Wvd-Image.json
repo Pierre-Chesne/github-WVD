@@ -1,7 +1,5 @@
 {
-    "variables": {        
-        "Share_Profils_location":"storagefslogix.file.core.windows.net",
-        "Share_Profils_folder":"profiles"
+    "variables": {
     },
     "builders": [
         {
