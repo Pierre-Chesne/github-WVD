@@ -45,7 +45,8 @@ jobs:
                 "author_icon": "${{ github.event.sender.avatar_url }}",
                 "fields":[
                   {
-                    "title": "Approuve le déploiement  " 
+                    "title": "Approuve le déploiement"
+                    "vaulue" "https://github.com/Pierre-Chesne/github-WVD/actions" 
                   }
                 ]
               }
