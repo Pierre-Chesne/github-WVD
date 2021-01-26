@@ -27,6 +27,7 @@ jobs:
                 "fields":[
                   {
                     "title": "Approuve le déploiement"
+                    "value": 
                   }
                 ]
               }
