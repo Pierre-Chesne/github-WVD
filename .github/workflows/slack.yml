@@ -14,10 +14,11 @@ jobs:
     steps:
 
       - name: Set Message Approuve
-        run: echo ::set-output name=MESSAGE_URL::$(https://github.com/Pierre-Chesne/github-WVD/actions)
+        run: |          
+          echo "::set-output name=message_url::$(https://github.com/Pierre-Chesne/github-WVD/actions)"
         id: url
 
       - name: test
         run: |
-          echo "The string is: ${{ steps.url.outputs.content }}"
+          echo "The string is: ${{ steps.url.outputs.content.message_url }}"
       
