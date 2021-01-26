@@ -1,1 +1,8 @@
-# Deploiement d'une infrastructure Windows Virtual Desktop
+# Déploiement d'une infrastructure Windows Virtual Desktop<br/>
+
+Exemple de chaîne de déploiement complète d'une infrastructure Windows Virtual Desktop. Ce Workflows exécute quatre jobs:<br/>
+- Build d'une image Windows 10 multi-sessions avec Packer :
+    - L'installation FSLogix
+    - Player VLC
+- Test/What-If de template ARM 
+   
