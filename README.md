@@ -5,5 +5,7 @@ Exemple de chaîne de déploiement complète d'une infrastructure Windows Virtua
     - L'installation FSLogix
     - Player VLC
 - Test/What-If de template ARM
-    - Génération du ""
+    - Génération du "Token Expiration Time"
+    - Test et What-If du Template ARM
+- 
    
