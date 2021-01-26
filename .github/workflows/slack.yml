@@ -17,5 +17,5 @@ jobs:
         run: echo '::set-output name=SELECTED_URL::https://github.com/Pierre-Chesne/github-WVD/actions'
         id: url
       - name: Get url
-        run: ${{ steps.url.outputs.SELECTED_URL }}"
+        run: echo ${{ steps.url.outputs.SELECTED_URL }}"
       
