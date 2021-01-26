@@ -12,45 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Slack Notification
-        uses: tokorom/action-slack-incoming-webhook@main
-        env:
-          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          text: Action GitHub "repo github-WVD "
-          attachments: |
-            [
-              {
-                "color": "good",
-                "author_name": "${{ github.actor }}",
-                "author_icon": "${{ github.event.sender.avatar_url }}",
-                "fields":[
-                  {
-                    "title": "Build de l'image Packer terminée " 
-                  }
-                ]
-              }
-            ]
-      - name: Slack Notification
-        uses: tokorom/action-slack-incoming-webhook@main
-        env:
-          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          text: Action GitHub "repo github-WVD "
-          attachments: |
-            [
-              {
-                "color": "good",
-                "author_name": "${{ github.actor }}",
-                "author_icon": "${{ github.event.sender.avatar_url }}",
-                "fields":[
-                  {
-                    "title": "Approuve le déploiement"
-                    "vaulue" "https://github.com/Pierre-Chesne/github-WVD/actions" 
-                  }
-                ]
-              }
-            ]    
-    
 
+- name: Set Message Approuve
+  run: echo ::set-env name=MESSAGE_URL::$(https://github.com/Pierre-Chesne/github-WVD/actions)
+  id: url
 
+- name: test
+    run: echo "The string is: ${{ steps.url.outputs.content }}"
+      
