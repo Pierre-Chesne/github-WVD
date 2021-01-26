@@ -24,7 +24,7 @@ jobs:
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          text: Action GitHub "repo github-WVD "
+          text: Action GitHub -> "repo github-WVD "
           attachments: |
             [
               {
@@ -34,7 +34,7 @@ jobs:
                 "fields":[
                   {
                     "title": "Approuve le déploiement"
-                    "value": ${{ secrets.SLACK_WEBHOOK_URL }} 
+                    "value": "${{ steps.url.outputs.SELECTED_URL }}" 
                   }
                 ]
               }
