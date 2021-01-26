@@ -4,5 +4,6 @@ Exemple de chaîne de déploiement complète d'une infrastructure Windows Virtua
 - Build d'une image Windows 10 multi-sessions avec Packer :
     - L'installation FSLogix
     - Player VLC
-- Test/What-If de template ARM 
+- Test/What-If de template ARM
+    - Génération du ""
    
