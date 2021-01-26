@@ -34,7 +34,7 @@ jobs:
                 "fields":[
                   {
                     "title": "Approuve le déploiement"
-                    "vaulue": ${{ secrets.SLACK_WEBHOOK_URL }} 
+                    "value": ${{ secrets.SLACK_WEBHOOK_URL }} 
                   }
                 ]
               }
