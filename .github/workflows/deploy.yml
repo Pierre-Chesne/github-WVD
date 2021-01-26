@@ -206,11 +206,11 @@ jobs:
 
     - name: Slack Notification fin du déploiement
       uses: tokorom/action-slack-incoming-webhook@main
-        env:
-          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          text: Action GitHub -> "repo github-WVD " -> Deploiement OK !
-          attachments: |
+      env:
+        INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      with:
+        text: Action GitHub -> "repo github-WVD " -> Deploiement OK !
+        attachments: |
             [
               {
                 "color": "good",
