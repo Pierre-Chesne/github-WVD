@@ -13,10 +13,10 @@ jobs:
 
     steps:
 
-- name: Set Message Approuve
-  run: echo ::set-env name=MESSAGE_URL::$(https://github.com/Pierre-Chesne/github-WVD/actions)
-  id: url
+      - name: Set Message Approuve
+        run: echo ::set-env name=MESSAGE_URL::$(https://github.com/Pierre-Chesne/github-WVD/actions)
+        id: url
 
-- name: test
-    run: echo "The string is: ${{ steps.url.outputs.content }}"
+      - name: test
+        run: echo "The string is: ${{ steps.url.outputs.content }}"
       
