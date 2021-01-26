@@ -19,8 +19,8 @@ env:
   SHAREIMAGEGALLERY: "sharedImageGallery"
   IMAGE_DEFINITION: "windows_WVD"
   PUB_GALLERY: "AzureWVD"
-  SHARE_PROFILS_LOCATION: "storagefslogix.file.core.windows.net"
-  SHARE_PROFILS_FOLDER: "profiles"  
+  SHARE_PROFILS_LOCATION: "vm-profiles"
+  SHARE_PROFILS_FOLDER: "ShareFSLogix"  
   
   # Variables Ressource Groupe WVD
   AZURE_RG: "RG-WVD-00" # nom du resource groupe
