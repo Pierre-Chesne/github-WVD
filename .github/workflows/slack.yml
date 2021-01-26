@@ -13,9 +13,9 @@ jobs:
 
     steps:
 
-      - name: Set selected color
-        run: echo '::set-output name=SELECTED_COLOR::https://github.com/Pierre-Chesne/github-WVD/actions'
-        id: random-color-generator
-      - name: Get color
-        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
+      - name: Set url
+        run: echo '::set-output name=SELECTED_URL::https://github.com/Pierre-Chesne/github-WVD/actions'
+        id: url
+      - name: Get url
+        run: echo "l'url est ${{ steps.url.outputs.SELECTED_URL }}"
       
