@@ -27,6 +27,14 @@ Prérequis (WVD):<br/>
 Prérequis GitHub Actions:<br/>
 - <a href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Secrets dans Github</a>
     - AZURE_CREDENTIALS
+    ```
+  {
+    "clientId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "subscriptionId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  }
+    ```
     - DOMAINE_USER_NAME_PASSWORD -> compte utilisateur du domaine (compte machine dans l'AD)
     - PWD_USER -> compte admin local des hosts
     - SLACK_WEBHOOK_URL -> url du canal SLACK
