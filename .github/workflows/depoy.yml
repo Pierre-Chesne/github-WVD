@@ -8,14 +8,14 @@ on:
       - "test/**"
 
 env:
-# Ressource Groupe
+  # Ressource Groupe
   AZURE_RG: "RG-WVD-00" # nom du resource groupe
   AZURE_LOCATION: "eastus2" # region Azure
 
-# Deploiement ARM  
- DEPLOYNAME: "Rollup-001" # Nom du déploiement
+  # Deploiement ARM  
+  DEPLOYNAME: "Rollup-001" # Nom du déploiement
 
-# Windows Virtual Desktop ARM    
+  # Windows Virtual Desktop ARM    
   HOSTPOOLS_NAME: "Host-Pool-01" # Nom du Host Pool
   POOLTYPE: "pooled" # Type de Pool "pooled" ou "personal"
   LBTYPE: "BreadthFirst" # Algo "BreathFirst" ou "Depthfirst"
