@@ -8,13 +8,19 @@ on:
       - "test/**"
 
 env:
+# Ressource Groupe
   AZURE_RG: "RG-WVD-00" # nom du resource groupe
-  AZURE_LOCATION: "eastus2" # region Azure  
+  AZURE_LOCATION: "eastus2" # region Azure
+
+# Deploiement ARM  
+ DEPLOYNAME: "Rollup-001" # Nom du déploiement
+
+# Windows Virtual Desktop ARM    
   HOSTPOOLS_NAME: "Host-Pool-01" # Nom du Host Pool
   POOLTYPE: "pooled" # Type de Pool "pooled" ou "personal"
-  LBTYPE: "BreadthFirst" # Algo "BreathFirst" ou "Deptfirst"
-  WORKSPACE_NAME: "Workspace-01" # Nom du Workslace
-  VMSIZE: "Standard_D2s_v3" # taille de la 
+  LBTYPE: "BreadthFirst" # Algo "BreathFirst" ou "Depthfirst"
+  WORKSPACE_NAME: "Workspace-01" # Nom du Workspace
+  VMSIZE: "Standard_D2s_v3" # taille des Hosts
   NUMBERS_OF_VM: 2 # Nombre de hosts dans le Host Pool
   HOST_NAME_PREFIX: "hostVDI" # Prefix des hosts  
   USERNAME: "pierrc" # compte admin local des Hosts
@@ -25,7 +31,11 @@ env:
   SUBNETNAME: "subnet-test" # Nom du subnet joingnable par l'active directory (local)
   RG_IMAGES: "RG-Images-WVD" # Nom du ressource groupe de l'image générée par Packer
   IMAGE_WVD: "WVD-FSlogix-VLC-Image-v0.0007-test" # Nom de l'image générée par Packer
-  DEPLOYNAME: "Rollup-001" # Nom du déploiement 
+  
+  # Droits Utilisateurs "Application Group"
+  AADGroupName: "WVDUsers"
+  DAGNAME: "Host-Pool-01-DAG"
+
 
 jobs:
   Test-Template:
@@ -64,20 +74,15 @@ jobs:
         with:
           azcliversion: 2.17.1
           inlineScript: |
-            az deployment group validate --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
+            az deployment group validate --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'dagname=${{ env.DAGNAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
 
       - name: What-If du Template ARM
         uses: azure/CLI@v1
         with:
           azcliversion: 2.17.1
           inlineScript: |
-            az deployment group what-if --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
-
-      - name: Notification Webhook -> Slack
-        run: |
-          curl -H "Content-Type: application/json" -d "{\"text\": \"Validation du deploiement WVD\"}" https://hooks.slack.com/services/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      
-  
-  
+            az deployment group what-if --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'dagname=${{ env.DAGNAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'     
+   
   Deploy:
     runs-on: ubuntu-20.04
     needs: Test-Template
@@ -110,11 +115,23 @@ jobs:
         with:
           azcliversion: 2.17.1
           inlineScript: |
-            az deployment group create --resource-group ${{ env.AZURE_RG }} --name ${{ env.DEPLOYNAME }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
+            az deployment group create --resource-group ${{ env.AZURE_RG }} --name ${{ env.DEPLOYNAME }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'dagname=${{ env.DAGNAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
 
-      - name: Notification Webhook -> Slack
-        run: |
-          curl -H "Content-Type: application/json" -d "{\"text\": \"Deploiement WVD termine\"}" https://hooks.slack.com/services/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      
+  Acces-Utilisateurs:
+    runs-on: windows-2019
+    needs: Deploy    
+    
+    steps:
 
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
 
-         
+    - name: Droits Utilisateurs
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          New-AzRoleAssignment -ObjectId (Get-AzADGroup -DisplayName ${{ env.AADGroupName }}).Id -RoleDefinitionName "Desktop Virtualization User" -ResourceName ${{ env.DAGNAME }} -ResourceGroupName ${{ env.AZURE_RG }} -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'
+        azPSVersion: '4.7.0'

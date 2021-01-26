@@ -44,6 +44,13 @@
                 "description": "Nom du 'Workspace'"
             }
         },
+        "dagname": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du 'Desktop Application Group'"
+            }
+
+        },
         "vmSize": {
             "type": "string",
             "metadata": {
@@ -155,7 +162,8 @@
         {
             "type": "Microsoft.DesktopVirtualization/applicationgroups",
             "apiVersion": "2019-12-10-preview",
-            "name": "[concat(parameters('hostpools_name'),'-DAG')]",
+            //"name": "[concat(parameters('hostpools_name'),'-DAG')]",
+            "name": "[parameters('dagname')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.DesktopVirtualization/hostpools', parameters('hostpools_name'))]"
