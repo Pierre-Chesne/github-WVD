@@ -34,7 +34,7 @@ jobs:
                 "fields":[
                   {
                     "title": "Approuve le déploiement"
-                    "vaulue": "https://github.com/Pierre-Chesne/github-WVD/actions" 
+                    "vaulue": ${{ secrets.SLACK_WEBHOOK_URL }} 
                   }
                 ]
               }
