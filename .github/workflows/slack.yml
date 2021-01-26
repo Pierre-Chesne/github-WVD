@@ -15,7 +15,7 @@ jobs:
 
       - name: Set Message Approuve
         run: |          
-          echo "::set-output name=message_url::$(echo https://github.com/Pierre-Chesne/github-WVD/actions)"
+          echo "::set-output name=message_url::$(echo "https://github.com/Pierre-Chesne/github-WVD/actions")"
         id: url
 
       - name: test
