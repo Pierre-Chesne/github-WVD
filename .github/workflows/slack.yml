@@ -34,7 +34,7 @@ jobs:
                 "fields":[
                   {
                     "title": "Approuve le déploiement"
-                    "value": "${{ steps.url.outputs.SELECTED_URL }}" 
+                    "value": echo "${{ steps.url.outputs.SELECTED_URL }}" 
                   }
                 ]
               }
