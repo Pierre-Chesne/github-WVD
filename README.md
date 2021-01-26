@@ -35,7 +35,10 @@ Prérequis GitHub Actions:<br/>
     "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
   }
     ```
-    - DOMAINE_USER_NAME_PASSWORD -> compte utilisateur du domaine (compte machine dans l'AD)
+    - DOMAINE_USER_NAME_PASSWORD -> mot de passe d'un compte utilisateur du domaine (compte machine dans l'AD)
+    ```
+    PasswordAdmin123$
+    ```
     - PWD_USER -> compte admin local des hosts
     - SLACK_WEBHOOK_URL -> url du canal SLACK
     - SP_ID -> Service Principal (Packer)
