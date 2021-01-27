@@ -23,7 +23,7 @@ Prérequis (WVD):<br/>
 - Le domaine ADDS (Windows Server) doit être synchronisé avec AD Connect
 - Un serveur Windows Server membre du domaine Active Directory pour le stockage des profiles utilisateur (FSLogix)
 - Un "virtual network/subnet" sur lequel on peut joindre de controleur de domaine
-- Un Service Principal owner de l'abonnement Azure (déploiement de Image Packer & déploiement des ressources)
+- Un Service Principal owner de l'abonnement Azure (déploiement de l'image via Packer & déploiement des ressources WVD)
 
 Prérequis pour "GitHub Actions":<br/>
 - Créer des secrets dans "<a href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Github Secret </a>" avec la structure ci-dessous:
