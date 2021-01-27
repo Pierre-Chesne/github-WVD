@@ -25,8 +25,8 @@ Prérequis (WVD):<br/>
 - Un Service Principal owner de l'abonnement Azure (déploiement de Image Packer & déploiement des ressources)
 
 Prérequis GitHub Actions:<br/>
-- Créer des secrets dans "<a href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Secrets dans Github</a>"
-    - AZURE_CREDENTIALS avec la structure ci-dessous:
+- Créer des secrets dans "<a href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Github </a>" avec la structure ci-dessous:
+    - AZURE_CREDENTIALS
     ```
   {
     "clientId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -44,6 +44,9 @@ Prérequis GitHub Actions:<br/>
     PasswordUser123$
     ```   
     - SLACK_WEBHOOK_URL -> url du canal SLACK
+    ```
+    https://hooks.slack.com/services/XXXXXXXXXX/XXXXXXXXXXX/xxxxxxxxxxxxxxxxxx
+    ```
     - SP_ID -> Service Principal (Packer)
     - SP_SECRET -> Secret du Service Principal (Packer)
     - SUBSCRIPTION_ID -> ID de l'abonnement (Packer)
