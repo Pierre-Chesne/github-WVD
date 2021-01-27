@@ -1,8 +1,8 @@
 # Déploiement d'une infrastructure Windows Virtual Desktop<br/>
 
 Exemple de chaîne de déploiement complète d'une infrastructure Windows Virtual Desktop.<br/>
-Ce Workflows "GitHub Actions" exécute quatre jobs:<br/>
-- Build d'une image Windows 10 multi-sessions avec Packer :
+Ce "Workflows" "GitHub Actions" exécute quatre jobs:<br/>
+- Build d'une image Windows 10 multi-sessions avec Microsoft 365 Apps  avec Packer :
     - L'installation et paramétrage de FSLogix
     - Player VLC
     - Notification via Webhook dans Slack 
@@ -24,8 +24,8 @@ Prérequis (WVD):<br/>
 - Un "virtual network/subnet" sur lequel on peut joindre de controleur de domaine<br/>
 - Un Service Principal owner de l'abonnement Azure (déploiement de Image Packer & déploiement des ressources)
 
-Prérequis GitHub Actions:<br/>
-- Créer des secrets dans "<a href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Github </a>" avec la structure ci-dessous:
+Prérequis pour "GitHub Actions":<br/>
+- Créer des secrets dans "<a href="https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Github Secret </a>" avec la structure ci-dessous:
     - AZURE_CREDENTIALS
     ```
   {

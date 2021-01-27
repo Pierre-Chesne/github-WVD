@@ -15,7 +15,7 @@
                 "description": "Nom du 'host pool'"
             }
         },
-        "poolType" : {
+        "poolType": {
             "type": "string",
             "metadata": {
                 "description": "Type de pool"
@@ -33,7 +33,7 @@
             }
         },
         "tokenExpirationTime": {
-            "type": "string",            
+            "type": "string",
             "metadata": {
                 "description": "Expiration de la cle d'enregistrtement au format : yyyy-MM-ddTHH:mm:ss.fffffffZ exemple en PS: $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))"
             }
@@ -92,7 +92,7 @@
             "metadata": {
                 "description": "Nom d'un compte utilisateur ayant les droits d'ajouter un compte d'ordinateur "
             }
-            
+
         },
         "domainUsernamePassword": {
             "type": "securestring",
@@ -118,11 +118,11 @@
                 "description": "Nom du subnet (joingnable avec controleur de domaine) "
             }
         },
-                "subscription_ID": {
+        "subscription_ID": {
             "type": "string",
             "metadata": {
                 "description": "ID de l'abonnement"
-            }                           
+            }
         },
         "RG_Images": {
             "type": "string",
@@ -258,7 +258,7 @@
                 "storageProfile": {
                     "imageReference": {
                         "id": "[concat('subscriptions/',parameters('subscription_ID'),'/resourceGroups/',parameters('RG_Images'),'/providers/Microsoft.Compute/images/',parameters('Image_WDV'))]"
-                                                
+
                     },
                     "osDisk": {
                         "osType": "Windows",
