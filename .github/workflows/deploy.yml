@@ -8,10 +8,10 @@ on:
       - "test/**"
 
 env:
-  # Variables Packer
+  # Variables pour Packer
   RG_IMAGES: "RG-Images-WVD" # Nom du ressource groupe de l'image générée par Packer
   IMAGE_WVD: "WVD-FSlogix-VLC-Image-v0.0007-test" # Nom de l'image générée par Packer
-  IMAGE_LOCATION: "eastus2" # Region Image
+  IMAGE_LOCATION: "eastus2" # Region de l'image
   OS: "Windows" # Type OS
   PUBLISHER: "MicrosoftWindowsDesktop" # Publisher WVD
   OFFER: "office-365" # Avec Office 365
@@ -31,14 +31,14 @@ env:
   POOLTYPE: "pooled" # Type de Pool "pooled" ou "personal"
   LBTYPE: "BreadthFirst" # Algo "BreathFirst" ou "Depthfirst"
   WORKSPACE_NAME: "Workspace-01" # Nom du Workspace
-  DAGNAME: "Host-Pool-01-DAG"
-  VMSIZE: "Standard_D2s_v3" # taille des Hosts
+  DAGNAME: "Host-Pool-01-DAG" # Nom de l'"Application Group" 
+  VMSIZE: "Standard_D2s_v3" # size des Hosts
   NUMBERS_OF_VM: 2 # Nombre de hosts dans le Host Pool
   HOST_NAME_PREFIX: "hostVDI" # Prefix des hosts  
   USERNAME: "pierrc" # compte admin local des Hosts
   DOMAINNAME: "ma-pme.local" # Nom de l'active directory (local) 
   DOMAINEUSERNAME: "pierrc@ma-pme.local" # Compte ayant le droit de mettre compte machine dans l'AD
-  VIRTUALNETWORKRESOURCEGROUPNAME: "RG-AD-WVD" # Nom du ressource groupe joingnable par l'active directory (local) 
+  VIRTUALNETWORKRESOURCEGROUPNAME: "RG-AD-WVD" # Nom du ressource groupe du vnet joingnable par l'active directory (local) 
   VIRTUALNETWORKNAME: "AD-WVD-vnet" # Nom du Virtual Network joingnable par l'active directory (local) 
   SUBNETNAME: "subnet-test" # Nom du subnet joingnable par l'active directory (local)
   
