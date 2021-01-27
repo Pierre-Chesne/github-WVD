@@ -15,8 +15,8 @@ Ce "Workflows" "GitHub Actions" exécute quatre jobs:<br/>
     - Génération du "Token Expiration Time"
     - Déploiement du template ARM
 - Assignation d'un groupe utilisateurs à "l'application group"
-    - Assignation d'un groupe utilsateur en Powershell
-    - Notifacation via Webhook dans Slack
+    - Assignation d'un groupe utilsateur à l'"application group" en Powershell
+    - Notification via Webhook dans Slack
 
 Prérequis (WVD):<br/>
 - Un controleur de domaine (Windows Serveur avec le rôle ADDS) dans Azure
