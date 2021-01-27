@@ -19,9 +19,10 @@ Ce "Workflows" "GitHub Actions" exécute quatre jobs:<br/>
     - Notifacation via Webhook dans Slack
 
 Prérequis (WVD):<br/>
-- Un controleur de domaine (Windows Serveur avec le rôle ADDS) dans Azure<br/>
-- Le domaine ADDS (Windows Server) doit être synchronisé avec AD Connect<br/>
-- Un "virtual network/subnet" sur lequel on peut joindre de controleur de domaine<br/>
+- Un controleur de domaine (Windows Serveur avec le rôle ADDS) dans Azure
+- Le domaine ADDS (Windows Server) doit être synchronisé avec AD Connect
+- Un serveur Windows Server membre du domaine Active Directory pour le stockage des profiles utilisateur (FSLogix)
+- Un "virtual network/subnet" sur lequel on peut joindre de controleur de domaine
 - Un Service Principal owner de l'abonnement Azure (déploiement de Image Packer & déploiement des ressources)
 
 Prérequis pour "GitHub Actions":<br/>
@@ -63,4 +64,3 @@ Prérequis pour "GitHub Actions":<br/>
     ```
     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     ```
-    
