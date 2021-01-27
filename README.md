@@ -48,6 +48,12 @@ Prérequis GitHub Actions:<br/>
     https://hooks.slack.com/services/XXXXXXXXXX/XXXXXXXXXXX/xxxxxxxxxxxxxxxxxx
     ```
     - SP_ID -> Service Principal (Packer)
+    ```
+    xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    ```
     - SP_SECRET -> Secret du Service Principal (Packer)
+    ```
+    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    ```
     - SUBSCRIPTION_ID -> ID de l'abonnement (Packer)
     - TENANT_ID -> ID du tenant (Packer)
