@@ -3,9 +3,9 @@ name: Deploiement d'une infra Windows Virtual Desktop
 on:
   push:
     branches:
-      - dev    
+      - main    
     paths:
-      - "test/**"
+      - "deploy/**"
 
 env:
   # Variables pour Packer
