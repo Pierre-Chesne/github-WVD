@@ -1,0 +1,235 @@
+name: Deploiement d'une infra Windows Virtual Desktop
+
+on:
+  push:
+    branches:
+      - dev    
+    paths:
+      - "test/**"
+
+env:
+  # Variables pour Packer
+  RG_IMAGES: "RG-Images-WVD" # Nom du ressource groupe de l'image générée par Packer
+  IMAGE_WVD: "WVD-FSlogix-VLC-Image-v0.0007-test" # Nom de l'image générée par Packer
+  IMAGE_LOCATION: "eastus2" # Region de l'image
+  OS: "Windows" # Type OS
+  PUBLISHER: "MicrosoftWindowsDesktop" # Publisher WVD
+  OFFER: "office-365" # Avec Office 365
+  SKU: "20h2-evd-o365pp" # Dernier SKU
+  SHARE_PROFILS_LOCATION: "vm-profiles" # Nom de la VM ou seront stockés les contenaires FSLogix
+  SHARE_PROFILS_FOLDER: "ShareFSLogix"  # Nom du partage ou seront stockés les contenaires FSLogix
+  
+  # Variables Ressource Groupe WVD
+  AZURE_RG: "RG-WVD-00" # nom du resource groupe
+  AZURE_LOCATION: "eastus2" # region Azure
+
+  # Variables Deploiement ARM  
+  DEPLOYNAME: "Rollup-001" # Nom du déploiement
+
+  # Variables Windows Virtual Desktop ARM    
+  HOSTPOOLS_NAME: "Host-Pool-01" # Nom du Host Pool
+  POOLTYPE: "pooled" # Type de Pool "pooled" ou "personal"
+  LBTYPE: "BreadthFirst" # Algo "BreathFirst" ou "Depthfirst"
+  WORKSPACE_NAME: "Workspace-01" # Nom du Workspace
+  DAGNAME: "Host-Pool-01-DAG" # Nom de l'"Application Group" 
+  VMSIZE: "Standard_D2s_v3" # size des Hosts
+  NUMBERS_OF_VM: 2 # Nombre de hosts dans le Host Pool
+  HOST_NAME_PREFIX: "hostVDI" # Prefix des hosts  
+  USERNAME: "pierrc" # compte admin local des Hosts
+  DOMAINNAME: "ma-pme.local" # Nom de l'active directory (local) 
+  DOMAINEUSERNAME: "pierrc@ma-pme.local" # Compte ayant le droit de mettre compte machine dans l'AD
+  VIRTUALNETWORKRESOURCEGROUPNAME: "RG-AD-WVD" # Nom du ressource groupe du vnet joingnable par l'active directory (local) 
+  VIRTUALNETWORKNAME: "AD-WVD-vnet" # Nom du Virtual Network joingnable par l'active directory (local) 
+  SUBNETNAME: "subnet-test" # Nom du subnet joingnable par l'active directory (local)
+  
+  # Variables Droits Utilisateurs (Azure AD) "Application Group"
+  AADGroupName: "WVDUsers" # Group AD acces à "l'application Group"
+
+jobs:
+
+  Build-Packer-Image:
+    runs-on: ubuntu-20.04
+
+    steps:
+
+      - name: Slack Notification start
+        uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          text: Action GitHub -> "repo github-WVD " -> Workflow Start !
+          attachments: |
+            [
+              {
+                "color": "good",
+                "author_name": "${{ github.actor }}",
+                "author_icon": "${{ github.event.sender.avatar_url }}"
+              }
+            ]
+
+      - name: Recuperation du repo
+        uses: actions/checkout@v2
+
+      - name: Login Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Creation du "Resource Group" Image Packer
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.17.1
+          inlineScript: |
+            az group create --name ${{ env.RG_IMAGES }} --location ${{ env.IMAGE_LOCATION }}
+
+      - name: Creation du ressource groupe
+        run: | 
+          packer validate -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.RG_IMAGES }}' -var 'image_Name=${{ env.IMAGE_WVD }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' -var 'Os=${{ env.OS }}' -var 'Publisher=${{ env.PUBLISHER}}' -var 'Offer=${{ env.OFFER }}' -var 'Sku=${{ env.SKU }}' -var 'Share_Profils_location=${{ env.SHARE_PROFILS_LOCATION }}' -var 'Share_Profils_folder=${{ env.SHARE_PROFILS_FOLDER }}' ./Packer/Wvd-Image.json
+
+      - name: Build Image Packer
+        run: |
+          packer build -var 'sp_Id=${{ secrets.SP_ID }}' -var 'sp_Secret=${{ secrets.SP_SECRET }}' -var 'tenant_Id=${{ secrets.TENANT_ID }}' -var 'subscription_Id=${{ secrets.SUBSCRIPTION_ID }}' -var 'image_Rgname=${{ env.RG_IMAGES }}' -var 'image_Name=${{ env.IMAGE_WVD }}' -var 'image_location=${{ env.IMAGE_LOCATION }}' -var 'Os=${{ env.OS }}' -var 'Publisher=${{ env.PUBLISHER}}' -var 'Offer=${{ env.OFFER }}' -var 'Sku=${{ env.SKU }}' -var 'Share_Profils_location=${{ env.SHARE_PROFILS_LOCATION }}' -var 'Share_Profils_folder=${{ env.SHARE_PROFILS_FOLDER }}' ./Packer/Wvd-Image.json
+
+      - name: Slack Notification build ok
+        uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          text: Action GitHub -> "repo github-WVD " -> Build Packer OK !
+          attachments: |
+            [
+              {
+                "color": "good",
+                "author_name": "${{ github.actor }}",
+                "author_icon": "${{ github.event.sender.avatar_url }}"
+              }
+            ]
+
+  Test-Template:
+    runs-on: ubuntu-20.04
+    needs: Build-Packer-Image
+   
+    steps:
+
+      - name: Creation du temp d'expiration du Token (host Pool)
+        shell: pwsh
+        run: |
+          $Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+          echo "::set-output name=content::$($Expiration)"
+        id: var_expiration      
+      
+      - name: Test du temp d'expiration du Token (host Pool)
+        run: |
+          echo "The string is: ${{ steps.var_expiration.outputs.content }}"
+
+      - name: Recuperation du repo
+        uses: actions/checkout@v2
+
+      - name: Login Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Creation du RG
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.17.1
+          inlineScript: |
+            az group create --name ${{ env.AZURE_RG }} --location ${{ env.AZURE_LOCATION }}
+           
+      - name: Test du Template ARM
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.17.1
+          inlineScript: |
+            az deployment group validate --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'dagname=${{ env.DAGNAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
+
+      - name: What-If du Template ARM
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.17.1
+          inlineScript: |
+            az deployment group what-if --resource-group ${{ env.AZURE_RG }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'dagname=${{ env.DAGNAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
+
+      - name: Slack Notification du déploiement
+        uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          text: Action GitHub -> "repo github-WVD " -> Approuve https://github.com/Pierre-Chesne/github-WVD/actions
+          attachments: |
+            [
+              {
+                "color": "good",
+                "author_name": "${{ github.actor }}",
+                "author_icon": "${{ github.event.sender.avatar_url }}"
+              }
+            ]        
+   
+  Deploiement:
+    runs-on: ubuntu-20.04
+    needs: Test-Template
+    environment:
+      name: depl
+
+    steps:
+
+      - name: Recuperation du repo
+        uses: actions/checkout@v2
+
+      - name: Login Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Creation du temp d'expiration du Token (host Pool)
+        shell: pwsh
+        run: |
+          $Expiration=$((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+          echo "::set-output name=content::$($Expiration)"
+        id: var_expiration      
+      
+      - name: Test du temp d'expiration du Token (host Pool)
+        run: |
+          echo "The string is: ${{ steps.var_expiration.outputs.content }}"    
+
+      - name: Deploiement du Template ARM
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.17.1
+          inlineScript: |
+            az deployment group create --resource-group ${{ env.AZURE_RG }} --name ${{ env.DEPLOYNAME }} --template-file ./ARM/azuredeploy.json --parameters 'hostpools_name=${{ env.HOSTPOOLS_NAME }}' 'dagname=${{ env.DAGNAME }}' 'poolType=${{ env.POOLTYPE }}' 'lbType=${{ env.LBTYPE }}' 'tokenExpirationTime=${{ steps.var_expiration.outputs.content }}' 'workspaces_name=${{ env.WORKSPACE_NAME }}' 'vmSize=${{ env.VMSIZE }}' 'subscription_ID=${{ secrets.SUBSCRIPTION_ID }}' 'RG_Images=${{ env.RG_IMAGES  }}' 'Image_WDV=${{ env.IMAGE_WVD }}' 'Numbers_of_VM=${{ env.NUMBERS_OF_VM }}' 'host_name_prefix=${{ env.HOST_NAME_PREFIX }}' 'Username=${{ env.USERNAME }}' 'pwdUser=${{ secrets.PWD_USER }}' 'domainName=${{ env.DOMAINNAME }}' 'domainUsername=${{ env.DOMAINEUSERNAME }}' 'domainUsernamePassword=${{ secrets.DOMAINE_USER_NAME_PASSWORD }}' 'virtualNetworkResourceGroupName=${{ env.VIRTUALNETWORKRESOURCEGROUPNAME }}' 'virtualNetworkName=${{ env.VIRTUALNETWORKNAME }}' 'subnetName=${{ env.SUBNETNAME }}'
+
+  Acces-Utilisateurs:
+    runs-on: windows-2019
+    needs: Deploiement    
+    
+    steps:
+
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
+
+    - name: Droits Utilisateurs
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          New-AzRoleAssignment -ObjectId (Get-AzADGroup -DisplayName ${{ env.AADGroupName }}).Id -RoleDefinitionName "Desktop Virtualization User" -ResourceName ${{ env.DAGNAME }} -ResourceGroupName ${{ env.AZURE_RG }} -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'
+        azPSVersion: '4.7.0'
+
+    - name: Slack Notification fin du déploiement
+      uses: tokorom/action-slack-incoming-webhook@main
+      env:
+        INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      with:
+        text: Action GitHub -> "repo github-WVD " -> Deploiement OK !
+        attachments: |
+            [
+              {
+                "color": "good",
+                "author_name": "${{ github.actor }}",
+                "author_icon": "${{ github.event.sender.avatar_url }}"
+              }
+            ]

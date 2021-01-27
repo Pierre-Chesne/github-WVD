@@ -1,0 +1,92 @@
+{
+    "variables": {
+    },
+    "builders": [
+        {
+            "type": "azure-arm",
+            "client_id": "{{user `sp_Id`}}",
+            "client_secret": "{{user `sp_Secret`}}",
+            "tenant_id": "{{user `tenant_Id`}}",
+            "subscription_id": "{{user `subscription_Id`}}",
+            "managed_image_resource_group_name": "{{user `image_Rgname`}}",
+            "managed_image_name": "{{user `image_Name`}}",
+            "os_type": "{{user `Os`}}",
+            "image_publisher": "{{user `Publisher`}}",
+            "image_offer": "{{user `Offer`}}",
+            "image_sku": "{{user `Sku`}}",
+            "communicator": "winrm",
+            "winrm_use_ssl": true,
+            "winrm_insecure": true,
+            "winrm_timeout": "5m",
+            "winrm_username": "packer",
+            "location": "{{user `image_location`}}",
+            "vm_size": "Standard_D2s_v3"            
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "powershell",
+            "inline": [
+                "$ErrorActionPreference='Stop'",
+                "Invoke-Expression ((New-Object -TypeName net.webclient).DownloadString('https://chocolatey.org/install.ps1'))",
+                "& choco feature enable -n allowGlobalConfirmation",
+                "Write-Host \"Chocolatey Installed.\""
+            ]
+        },
+        {
+            "type": "powershell",
+            "inline": [ 
+                "$ErrorActionPreference='Stop'",
+                "& choco install fslogix",
+                "Write-Host \"fslogix Installed.\""
+            ]
+        },
+        {
+            "type": "powershell",            
+            "inline": [ 
+                "$ErrorActionPreference='Stop'",
+                "& reg add HKLM\\SOFTWARE\\FSLogix\\Profiles",
+                "Write-Host \"fslogix Profiles.\""
+            ]
+        },
+        {
+            "type": "powershell",
+            "inline": [
+                "$ErrorActionPreference='Stop'",
+                "& reg add HKLM\\SOFTWARE\\FSLogix\\Profiles /v Enabled /t REG_DWORD /d 0x00000001 ",
+                "Write-Host \"fslogix Profiles Enabled.\""
+            ]
+        },
+        {
+            "type": "powershell",
+            "inline": [
+                "$ErrorActionPreference='Stop'",
+                "& reg add HKLM\\SOFTWARE\\FSLogix\\Profiles /v DeleteLocalProfileWhenVHDShouldApply /t REG_DWORD /d 0x00000001 ",
+                "Write-Host \"fslogix Profiles DeleteLocalProfileWhenVHDShouldApply.\""
+            ]
+        },
+        {
+            "type": "powershell",
+            "inline": [
+                "$ErrorActionPreference='Stop'",
+                "& reg add HKLM\\SOFTWARE\\FSLogix\\Profiles /v VHDLocations /t REG_MULTI_SZ /d \\\\{{user `Share_Profils_location`}}\\{{user `Share_Profils_folder`}} ",
+                "Write-Host \"fslogix Profiles VHDLocations .\""
+            ]
+        },
+        {
+            "type":"powershell",
+            "inline":[
+                "$ErrorActionPreference='Stop'",
+                "& choco install vlc",
+                "Write-Host \"vlc Installed.\""
+            ]
+        },
+        {
+            "type": "powershell",
+            "inline": [ 
+                "& $env:SystemRoot\\System32\\Sysprep\\Sysprep.exe /oobe /generalize /quiet /quit",
+                "while($true) { $imageState = Get-ItemProperty HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Setup\\State | Select ImageState; if($imageState.ImageState -ne 'IMAGE_STATE_GENERALIZE_RESEAL_TO_OOBE') { Write-Output $imageState.ImageState; Start-Sleep -s 10  } else { break } }"
+            ]
+        }
+    ]
+}

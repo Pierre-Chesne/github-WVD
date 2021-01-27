@@ -1,0 +1,358 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Localisation de la region du 'resource group'"
+            },
+            "defaultValue": "[resourceGroup().location]"
+        },
+        "hostpools_name": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du 'host pool'"
+            }
+        },
+        "poolType": {
+            "type": "string",
+            "metadata": {
+                "description": "Type de pool"
+            }
+        },
+        "lbType": {
+            "type": "string",
+            "allowedValues": [
+                "BreadthFirst",
+                "DepthFirst",
+                "Persistent"
+            ],
+            "metadata": {
+                "description": "Type de Load Balancer (BreadthFirst ou DepthFirst ou Persistent )'"
+            }
+        },
+        "tokenExpirationTime": {
+            "type": "string",
+            "metadata": {
+                "description": "Expiration de la cle d'enregistrtement au format : yyyy-MM-ddTHH:mm:ss.fffffffZ exemple en PS: $((get-date).ToUniversalTime().AddHours(2).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))"
+            }
+        },
+        "workspaces_name": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du 'Workspace'"
+            }
+        },
+        "dagname": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du 'Desktop Application Group'"
+            }
+
+        },
+        "vmSize": {
+            "type": "string",
+            "metadata": {
+                "description": "Taille de la VM"
+            }
+        },
+        "Numbers_of_VM": {
+            "type": "int",
+            "metadata": {
+                "description": "Nombre de VM"
+            }
+        },
+        "host_name_prefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du host pool"
+            }
+        },
+        "Username": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom administrateur local "
+            }
+        },
+        "pwdUser": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Mot de passe de l' administrateur local "
+            }
+        },
+        "domainName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du domaine Active Directory ex: ma-pme.local "
+            }
+        },
+        "domainUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom d'un compte utilisateur ayant les droits d'ajouter un compte d'ordinateur "
+            }
+
+        },
+        "domainUsernamePassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Mot de passe utilisateur 'ex: pierrc@ma-pme.local' "
+            }
+        },
+        "virtualNetworkResourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du 'resource group' du Vnet (joingnable avec controleur de domaine) "
+            }
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du Vnet (joingnable avec controleur de domaine) "
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du subnet (joingnable avec controleur de domaine) "
+            }
+        },
+        "subscription_ID": {
+            "type": "string",
+            "metadata": {
+                "description": "ID de l'abonnement"
+            }
+        },
+        "RG_Images": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom du ressource groupe de l'image"
+            }
+        },
+        "Image_WDV": {
+            "type": "string",
+            "metadata": {
+                "description": "Nom de l'image"
+            }
+        }
+    },
+    "variables": {
+        "subnet-id": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
+
+    },
+    "resources": [
+        {
+            "type": "Microsoft.DesktopVirtualization/hostpools",
+            "apiVersion": "2019-12-10-preview",
+            "name": "[parameters('hostpools_name')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "hostPoolType": "[parameters('poolType')]",
+                "maxSessionLimit": 5,
+                "loadBalancerType": "[parameters('lbType')]",
+                "validationEnvironment": true,
+                "registrationInfo": {
+                    "registrationTokenOperation": "Update",
+                    "expirationTime": "[parameters('tokenExpirationTime')]",
+                    "token": "null"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DesktopVirtualization/applicationgroups",
+            "apiVersion": "2019-12-10-preview",
+            //"name": "[concat(parameters('hostpools_name'),'-DAG')]",
+            "name": "[parameters('dagname')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DesktopVirtualization/hostpools', parameters('hostpools_name'))]"
+            ],
+            "kind": "Desktop",
+            "properties": {
+                "hostPoolArmPath": "[resourceId('Microsoft.DesktopVirtualization/hostpools', parameters('hostpools_name'))]",
+                "description": "Desktop Application Group created through the Hostpool Wizard",
+                "friendlyName": "Default Desktop",
+                "applicationGroupType": "Desktop"
+            }
+        },
+        {
+            "type": "Microsoft.DesktopVirtualization/workspaces",
+            "apiVersion": "2019-12-10-preview",
+            "name": "[parameters('workspaces_name')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DesktopVirtualization/applicationgroups',concat(parameters('hostpools_name'),'-DAG'))]"
+            ],
+            "properties": {
+                "applicationGroupReferences": [
+                    "[resourceId('Microsoft.DesktopVirtualization/applicationgroups',concat(parameters('hostpools_name'),'-DAG') )]"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Compute/availabilitySets",
+            "name": "[concat(parameters('hostpools_name'),'-AvSet')]",
+            "apiVersion": "2019-07-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DesktopVirtualization/hostpools', parameters('hostpools_name'))]"
+            ],
+            "sku": {
+                "name": "Aligned"
+            },
+            "properties": {
+                "platformFaultDomainCount": 2,
+                "platformUpdateDomainCount": 5
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-04-01",
+            "name": "[concat(parameters('host_name_prefix'),'-',copyIndex(),'-nic')]",
+            "location": "[parameters('location')]",
+            "copy": {
+                "name": "nicloop",
+                "count": "[parameters('Numbers_of_VM')]"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('subnet-id')]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [
+                    ]
+                },
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-07-01",
+            "name": "[concat(parameters('host_name_prefix'),'-',copyIndex())]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('host_name_prefix'),'-',copyIndex(),'-nic'))]",
+                "[resourceId('Microsoft.DesktopVirtualization/hostpools', parameters('hostpools_name'))]",
+                "[resourceId('Microsoft.Compute/availabilitySets', concat(parameters('hostpools_name'),'-AvSet'))]"
+            ],
+            "copy": {
+                "name": "VMloop",
+                "count": "[parameters('Numbers_of_VM')]"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "id": "[concat('subscriptions/',parameters('subscription_ID'),'/resourceGroups/',parameters('RG_Images'),'/providers/Microsoft.Compute/images/',parameters('Image_WDV'))]"
+
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('host_name_prefix'),'-',copyIndex(), '_OsDisk_1')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[concat(parameters('host_name_prefix'),'-',copyIndex())]",
+                    "adminUsername": "[parameters('Username')]",
+                    "adminPassword": "[parameters('pwdUser')]",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    }
+
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('host_name_prefix'),'-',copyIndex(),'-nic'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": false
+                    }
+                },
+                "licenseType": "Windows_Client",
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', concat(parameters('hostpools_name'),'-AvSet'))]"
+                }
+            }
+
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('host_name_prefix'),'-',copyIndex(), '/','joindomain' )]",
+            "location": "[parameters('location')]",
+            "apiVersion": "2018-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', concat(parameters('host_name_prefix'),'-',copyIndex()))]",
+                "[resourceId('Microsoft.DesktopVirtualization/hostpools', parameters('hostpools_name'))]"
+            ],
+            "copy": {
+                "name": "joindomainloop",
+                "count": "[parameters('Numbers_of_VM')]"
+            },
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "JsonADDomainExtension",
+                "typeHandlerVersion": "1.3",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "name": "[parameters('domainName')]",
+                    "user": "[parameters('domainUsername')]",
+                    "restart": "true",
+                    "options": "3"
+                },
+                "protectedSettings": {
+                    "password": "[parameters('domainUsernamePassword')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2018-10-01",
+            "name": "[concat(parameters('host_name_prefix'),'-',copyIndex(),'/','dscextension')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', concat(parameters('host_name_prefix'),'-',copyIndex()))]",
+                "[resourceId('Microsoft.DesktopVirtualization/hostpools', parameters('hostpools_name'))]"
+            ],
+            "copy": {
+                "name": "agentsloop",
+                "count": "[parameters('Numbers_of_VM')]"
+            },
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "2.73",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "modulesUrl": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/ARM-wvd-templates/DSC/Configuration.zip",
+                    "configurationFunction": "Configuration.ps1\\AddSessionHost",
+                    "properties": {
+                        "hostPoolName": "[concat(parameters('host_name_prefix'),'-',copyIndex())]",
+                        "registrationInfoToken": "[reference(parameters('hostpools_name')).registrationInfo.token]"
+                    }
+                }
+            }
+        }
+    ]
+}
