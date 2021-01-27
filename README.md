@@ -1,4 +1,4 @@
-# Déploiement d'une infrastructure Windows Virtual Desktop<br/>
+# Déploiement d'une infrastructure "Windows Virtual Desktop"<br/>
 
 Exemple de chaîne de déploiement complète d'une infrastructure Windows Virtual Desktop.<br/>
 Ce "Workflows" "GitHub Actions" exécute quatre jobs:<br/>
