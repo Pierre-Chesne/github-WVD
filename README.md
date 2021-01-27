@@ -56,4 +56,10 @@ Prérequis GitHub Actions:<br/>
     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     ```
     - SUBSCRIPTION_ID -> ID de l'abonnement (Packer)
+    ```
+    xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    ```
     - TENANT_ID -> ID du tenant (Packer)
+    ```
+    xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    ```
